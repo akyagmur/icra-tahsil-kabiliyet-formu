@@ -283,31 +283,98 @@ body {
   }
 }
 
-/* PDF Generation Styles */
-.pdf-mode .form-section {
-  background: white !important;
-  box-shadow: none !important;
-  border: 2px solid #333 !important;
-  border-left: 5px solid #667eea !important;
-  opacity: 1 !important;
+/* PDF Generation Styles - Compact Layout */
+.pdf-mode {
+  font-size: 10px !important;
 }
 
 .pdf-mode .form-wrapper {
+  padding: 15px !important;
   background: white !important;
+}
+
+.pdf-mode .form-header {
+  margin-bottom: 15px !important;
+  padding-bottom: 10px !important;
+}
+
+.pdf-mode .form-header h1 {
+  font-size: 16px !important;
+  margin-bottom: 5px !important;
+}
+
+.pdf-mode .form-section {
+  background: white !important;
+  box-shadow: none !important;
+  border: 1px solid #333 !important;
+  border-left: 3px solid #667eea !important;
+  opacity: 1 !important;
+  padding: 12px !important;
+  margin-bottom: 15px !important;
+}
+
+.pdf-mode .form-section h2 {
+  font-size: 12px !important;
+  margin-bottom: 10px !important;
+  font-weight: 700 !important;
+}
+
+.pdf-mode .form-grid {
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+.pdf-mode .form-group label {
+  font-size: 9px !important;
+  margin-bottom: 3px !important;
+  font-weight: 600 !important;
+}
+
+.pdf-mode .form-group input,
+.pdf-mode .form-group select,
+.pdf-mode .form-group textarea {
+  padding: 4px 6px !important;
+  font-size: 9px !important;
+  border: 1px solid #666 !important;
+  border-radius: 3px !important;
 }
 
 .pdf-mode .table-header > div {
   background: #333 !important;
   color: white !important;
+  padding: 6px 4px !important;
+  font-size: 8px !important;
+  font-weight: 600 !important;
 }
 
 .pdf-mode .table-row > div {
   background: white !important;
   border: 1px solid #333 !important;
+  padding: 4px !important;
+  font-size: 8px !important;
 }
 
 .pdf-mode .table-row:nth-child(even) > div {
   background: #f5f5f5 !important;
+}
+
+.pdf-mode .table-row > div input[type="text"],
+.pdf-mode .table-row > div select,
+.pdf-mode .table-row > div textarea {
+  padding: 2px 4px !important;
+  font-size: 8px !important;
+  border: 1px solid #999 !important;
+  min-height: auto !important;
+}
+
+.pdf-mode .table-row > div textarea {
+  min-height: 25px !important;
+  resize: none !important;
+}
+
+.pdf-mode .table-row > div input[type="checkbox"] {
+  width: 12px !important;
+  height: 12px !important;
 }
 
 /* Print Styles for PDF */

@@ -140,11 +140,11 @@ function App() {
     element.classList.add('pdf-mode')
     element.style.background = 'white'
     
-    // Kısa bir delay vererek DOM'un güncellenmesini bekleyelim
-    await new Promise(resolve => setTimeout(resolve, 100))
+    // DOM'un güncellenmesini bekle
+    await new Promise(resolve => setTimeout(resolve, 200))
     
     const canvas = await html2canvas(element, {
-      scale: 2,
+      scale: 1.5,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
@@ -158,23 +158,24 @@ function App() {
     element.classList.remove('pdf-mode')
     element.style.background = ''
     
-    const imgData = canvas.toDataURL('image/png', 1.0)
+    const imgData = canvas.toDataURL('image/png', 0.95)
     const pdf = new jsPDF('p', 'mm', 'a4')
-    const imgWidth = 210
-    const pageHeight = 297
+    const imgWidth = 210   // Tam sayfa genişliği
+    const pageHeight = 297 // Tam sayfa yüksekliği
     const imgHeight = (canvas.height * imgWidth) / canvas.width
-    let heightLeft = imgHeight
     
-    let position = 0
-    
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST')
-    heightLeft -= pageHeight
-    
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight
-      pdf.addPage()
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST')
-      heightLeft -= pageHeight
+    // Tek sayfaya sığdırmaya çalış
+    if (imgHeight <= pageHeight) {
+      // Tek sayfa - tam boyut
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, '', 'FAST')
+    } else {
+      // Çok uzunsa scale down yap - tam sayfa kullan
+      const scaleFactor = pageHeight / imgHeight
+      const scaledWidth = imgWidth * scaleFactor
+      const scaledHeight = pageHeight
+      const xPosition = (210 - scaledWidth) / 2
+      
+      pdf.addImage(imgData, 'PNG', xPosition, 0, scaledWidth, scaledHeight, '', 'FAST')
     }
     
     // Dinamik dosya ismi oluştur
