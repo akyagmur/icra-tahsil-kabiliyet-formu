@@ -103,6 +103,36 @@ function App() {
     }))
   }
 
+  // Dosya ismi oluşturma fonksiyonu
+  const createFileName = (borcluAdi) => {
+    if (!borcluAdi || borcluAdi.trim() === '') {
+      return 'icra-dosyasi-tahsil-kabiliyeti-formu.pdf'
+    }
+    
+    // Türkçe karakterleri İngilizce'ye çevir
+    const turkishMap = {
+      'ç': 'c', 'Ç': 'c',
+      'ğ': 'g', 'Ğ': 'g', 
+      'ı': 'i', 'I': 'i',
+      'İ': 'i', 'i': 'i',
+      'ö': 'o', 'Ö': 'o',
+      'ş': 's', 'Ş': 's',
+      'ü': 'u', 'Ü': 'u'
+    }
+    
+    let fileName = borcluAdi
+      .toLowerCase()
+      .split('')
+      .map(char => turkishMap[char] || char)
+      .join('')
+      .replace(/[^a-z0-9\s-]/g, '') // Özel karakterleri kaldır
+      .replace(/\s+/g, '-') // Boşlukları tire ile değiştir
+      .replace(/-+/g, '-') // Çoklu tireleri tek tire yap
+      .replace(/^-|-$/g, '') // Başındaki ve sonundaki tireleri kaldır
+    
+    return `${fileName}-icra-tahsil-kabiliyeti-formu.pdf`
+  }
+
   const generatePDF = async () => {
     const element = formRef.current
     
@@ -147,7 +177,9 @@ function App() {
       heightLeft -= pageHeight
     }
     
-    pdf.save('icra-dosyasi-tahsil-kabiliyeti-formu.pdf')
+    // Dinamik dosya ismi oluştur
+    const fileName = createFileName(formData.borcluAdi)
+    pdf.save(fileName)
   }
 
   return (
