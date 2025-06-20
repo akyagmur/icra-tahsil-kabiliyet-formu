@@ -106,20 +106,26 @@ function App() {
   const generatePDF = async () => {
     const element = formRef.current
     
-    // PDF için arka planı beyaz yapalım
+    // PDF için özel styling
+    element.classList.add('pdf-mode')
     element.style.background = 'white'
     
+    // Kısa bir delay vererek DOM'un güncellenmesini bekleyelim
+    await new Promise(resolve => setTimeout(resolve, 100))
+    
     const canvas = await html2canvas(element, {
-      scale: 3,
+      scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
       logging: false,
       width: element.scrollWidth,
-      height: element.scrollHeight
+      height: element.scrollHeight,
+      removeContainer: true
     })
     
-    // Arka planı eski haline getir
+    // Styling'i eski haline getir
+    element.classList.remove('pdf-mode')
     element.style.background = ''
     
     const imgData = canvas.toDataURL('image/png', 1.0)

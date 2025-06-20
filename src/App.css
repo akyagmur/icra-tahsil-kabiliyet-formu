@@ -283,6 +283,33 @@ body {
   }
 }
 
+/* PDF Generation Styles */
+.pdf-mode .form-section {
+  background: white !important;
+  box-shadow: none !important;
+  border: 2px solid #333 !important;
+  border-left: 5px solid #667eea !important;
+  opacity: 1 !important;
+}
+
+.pdf-mode .form-wrapper {
+  background: white !important;
+}
+
+.pdf-mode .table-header > div {
+  background: #333 !important;
+  color: white !important;
+}
+
+.pdf-mode .table-row > div {
+  background: white !important;
+  border: 1px solid #333 !important;
+}
+
+.pdf-mode .table-row:nth-child(even) > div {
+  background: #f5f5f5 !important;
+}
+
 /* Print Styles for PDF */
 @media print {
   .form-actions {
@@ -298,7 +325,10 @@ body {
     break-inside: avoid;
     page-break-inside: avoid;
     background: white !important;
-    border: 1px solid #ddd;
+    border: 2px solid #333 !important;
+    border-left: 5px solid #667eea !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
   }
   
   .table-row {
@@ -306,17 +336,17 @@ body {
   }
   
   .table-header > div {
-    background: #667eea !important;
+    background: #333 !important;
     color: white !important;
   }
   
   .table-row > div {
     background: white !important;
-    border: 1px solid #ddd !important;
+    border: 1px solid #333 !important;
   }
   
   .table-row:nth-child(even) > div {
-    background: #f9f9f9 !important;
+    background: #f5f5f5 !important;
   }
 }
 
