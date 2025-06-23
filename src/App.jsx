@@ -138,22 +138,18 @@ function App() {
     
     // Türkçe karakter desteği için font
     pdf.setFont('helvetica', 'bold')
-    pdf.setFontSize(14)
+    pdf.setFontSize(12)
     pdf.setTextColor(0, 0, 0)
     
-    // Başlık - iki satırda
-    const title1 = 'ICRA DOSYASI TAHSIL KABILIYETI'
-    const title2 = 'DEGERLENDIRME FORMU'
-    
-    pdf.text(title1, 105, yPos, { align: 'center' })
-    yPos += 6
-    pdf.text(title2, 105, yPos, { align: 'center' })
-    yPos += 10
+    // Başlık
+    const title = 'ICRA DOSYASI TAHSIL KABILIYETI DEGERLENDIRME FORMU'
+    pdf.text(title, 105, yPos, { align: 'center' })
+    yPos += 8
     
     // Çizgi
     pdf.setLineWidth(0.5)
     pdf.line(15, yPos, 195, yPos)
-    yPos += 10
+    yPos += 8
     
     // Helper functions - Türkçe karakter desteği
     const turkishToEnglish = (text) => {
@@ -169,11 +165,11 @@ function App() {
     }
     
     const addSection = (title, addSpace = true) => {
-      if (addSpace) yPos += 2  // Üste biraz boşluk ekle
+      if (addSpace) yPos += 4
       pdf.setFont('helvetica', 'bold')
       pdf.setFontSize(9)
       pdf.text(turkishToEnglish(title), 15, yPos)
-      yPos += 5
+      yPos += 4
     }
     
     const addField = (label, value, width = 85) => {
@@ -208,9 +204,10 @@ function App() {
     const addTable = (headers, rows) => {
       const tableWidth = 180
       const colWidths = {
-        5: [36, 36, 36, 36, 36],  // 5 kolon
-        4: [45, 45, 45, 45],      // 4 kolon
-        3: [60, 60, 60],          // 3 kolon
+        5: [36, 36, 36, 36, 36],
+        4: [45, 45, 45, 45],
+        3: [60, 60, 60],
+        2: [50, 130],
       }
       const widths = colWidths[headers.length] || Array(headers.length).fill(tableWidth / headers.length)
       
@@ -236,22 +233,37 @@ function App() {
       pdf.setFontSize(7)
       
       rows.forEach(row => {
+        checkNewPage(20)
+
+        let maxLines = 1
+        row.forEach((cell, i) => {
+          const text = cell ? String(cell) : ''
+          const lines = pdf.splitTextToSize(turkishToEnglish(text), widths[i] - 2)
+          if (lines.length > maxLines) {
+            maxLines = lines.length
+          }
+        })
+
+        const rowHeight = maxLines * 3.5 + 1.5
+        checkNewPage(rowHeight)
+
         xPos = 15
         row.forEach((cell, i) => {
-          pdf.rect(xPos, yPos, widths[i], 5)
+          pdf.rect(xPos, yPos, widths[i], rowHeight)
           if (cell && String(cell).trim()) {
-            const cleanCell = turkishToEnglish(String(cell)).substring(0, 25)
-            pdf.text(cleanCell, xPos + 1, yPos + 3.5)
+            const text = turkishToEnglish(String(cell))
+            const textLines = pdf.splitTextToSize(text, widths[i] - 2)
+            pdf.text(textLines, xPos + 1, yPos + 3.5)
           }
           xPos += widths[i]
         })
-        yPos += 5
+        yPos += rowHeight
       })
-      yPos += 3
+      yPos += 2
     }
     
     const checkNewPage = (space = 25) => {
-      if (yPos > 270 - space) {
+      if (yPos > 285 - space) {
         pdf.addPage()
         yPos = 20
       }
@@ -318,32 +330,18 @@ function App() {
     
     // 6. Özet
     addSection('İCRA DOSYASI TAHSİL KABİLİYETİ DEĞERLENDİRME ÖZETİ')
-
-    const drawSummaryField = (label, value) => {
-      const fieldHeight = 4;
-      const fieldWidth = 130; 
-      const labelY = yPos + fieldHeight / 2 - 1;
-
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(8);
-      pdf.text(turkishToEnglish(label) + ':', 15, labelY);
-      pdf.rect(55, yPos, fieldWidth, fieldHeight);
-
-      if (value) {
-        const cleanValue = turkishToEnglish(String(value));
-        const textLines = pdf.splitTextToSize(cleanValue, fieldWidth - 4);
-        pdf.text(textLines, 57, yPos + 3.5);
-      }
-      yPos += fieldHeight + 2; 
-    };
-
-    drawSummaryField('Tebligat Süreçleri', formData.tebligatSurecOzet);
-    drawSummaryField('Taşınmaz ve Araç Varlığı', formData.tasinmazAracOzet);
-    drawSummaryField('SGK ve Gelir Durumu', formData.sgkGelirOzet);
-    drawSummaryField('Fiili Haciz İmkanı', formData.hacizImkanOzet);
-    drawSummaryField('Fiili Haciz Uygulaması', formData.hacizUygulamaOzet);
-    drawSummaryField('Banka Varlıkları', formData.bankaVarlikOzet);
-    drawSummaryField('Genel Tahsil Kabiliyeti', formData.genelTahsilOzet);
+    addTable(
+      ['Değerlendirme Alanı', 'Sonuç / Açıklama'],
+      [
+        ['Tebligat Süreçleri', formData.tebligatSurecOzet],
+        ['Taşınmaz ve Araç Varlığı', formData.tasinmazAracOzet],
+        ['SGK ve Gelir Durumu', formData.sgkGelirOzet],
+        ['Fiili Haciz İmkanı', formData.hacizImkanOzet],
+        ['Fiili Haciz Uygulaması', formData.hacizUygulamaOzet],
+        ['Banka Varlıkları', formData.bankaVarlikOzet],
+        ['Genel Tahsil Kabiliyeti', formData.genelTahsilOzet]
+      ]
+    )
     
     // Dinamik dosya ismi oluştur
     const fileName = createFileName(formData.borcluAdi)
