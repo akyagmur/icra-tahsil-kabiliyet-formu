@@ -2,6 +2,8 @@ import { useState, useRef } from 'react'
 import jsPDF from 'jspdf'
 import './App.css'
 
+const staticCellColor = [235, 238, 242]; // Light grayish blue
+
 function App() {
   const formRef = useRef()
   
@@ -241,7 +243,7 @@ function App() {
 
         let maxLines = 1
         row.forEach((cell, i) => {
-          const text = cell ? String(cell) : ''
+          const text = cell.text ? String(cell.text) : ''
           const lines = pdf.splitTextToSize(turkishToEnglish(text), widths[i] - 2)
           if (lines.length > maxLines) {
             maxLines = lines.length
@@ -253,9 +255,17 @@ function App() {
 
         xPos = 15
         row.forEach((cell, i) => {
-          pdf.rect(xPos, yPos, widths[i], rowHeight)
-          if (cell && String(cell).trim()) {
-            const text = turkishToEnglish(String(cell))
+          if (cell.isStatic) {
+            pdf.setFillColor(staticCellColor[0], staticCellColor[1], staticCellColor[2]);
+          } else {
+            pdf.setFillColor(255, 255, 255);
+          }
+          pdf.setDrawColor(0, 0, 0);
+          pdf.rect(xPos, yPos, widths[i], rowHeight, 'FD')
+          
+          pdf.setTextColor(0, 0, 0);
+          if (cell.text && String(cell.text).trim()) {
+            const text = turkishToEnglish(String(cell.text))
             const textLines = pdf.splitTextToSize(text, widths[i] - 2)
             pdf.text(textLines, xPos + 1, yPos + 3.5)
           }
@@ -284,9 +294,30 @@ function App() {
     addSection('1. BORCLU TEBLIGAT DURUMU BILGILERI')
     const tebligatHeaders = ['Borclu', 'MERSIS/MERNIS', 'TK/35', 'TK/21', 'e-Tebligat', 'Not']
     const tebligatData = [
-      ['Borclu 1', formData.borclu1Mersis ? 'X' : '', formData.borclu1TK35 ? 'X' : '', formData.borclu1TK21 ? 'X' : '', formData.borclu1eTebligat ? 'X' : '', formData.borclu1Not],
-      ['Borclu 2', formData.borclu2Mersis ? 'X' : '', formData.borclu2TK35 ? 'X' : '', formData.borclu2TK21 ? 'X' : '', formData.borclu2eTebligat ? 'X' : '', formData.borclu2Not],
-      ['Borclu 3', formData.borclu3Mersis ? 'X' : '', formData.borclu3TK35 ? 'X' : '', formData.borclu3TK21 ? 'X' : '', formData.borclu3eTebligat ? 'X' : '', formData.borclu3Not]
+      [
+        { text: 'Borclu 1', isStatic: true },
+        { text: formData.borclu1Mersis ? 'X' : '' },
+        { text: formData.borclu1TK35 ? 'X' : '' },
+        { text: formData.borclu1TK21 ? 'X' : '' },
+        { text: formData.borclu1eTebligat ? 'X' : '' },
+        { text: formData.borclu1Not }
+      ],
+      [
+        { text: 'Borclu 2', isStatic: true },
+        { text: formData.borclu2Mersis ? 'X' : '' },
+        { text: formData.borclu2TK35 ? 'X' : '' },
+        { text: formData.borclu2TK21 ? 'X' : '' },
+        { text: formData.borclu2eTebligat ? 'X' : '' },
+        { text: formData.borclu2Not }
+      ],
+      [
+        { text: 'Borclu 3', isStatic: true },
+        { text: formData.borclu3Mersis ? 'X' : '' },
+        { text: formData.borclu3TK35 ? 'X' : '' },
+        { text: formData.borclu3TK21 ? 'X' : '' },
+        { text: formData.borclu3eTebligat ? 'X' : '' },
+        { text: formData.borclu3Not }
+      ]
     ]
     addTable(tebligatHeaders, tebligatData)
     
@@ -295,10 +326,10 @@ function App() {
     addTable(
       ['Sorgu Konusu', 'Sonuc', 'Haciz Uygulama', 'Onceki Hacizler'],
       [
-        ['Tasinmaz Mal Varligi', formData.tasinmazVarlik, formData.tasinmazHaciz, formData.tasinmazOncekiHaciz],
-        ['Arac Kaydi', formData.aracKaydi, formData.aracHaciz, formData.aracOncekiHaciz],
-        ['Alacakli Icra Takip', formData.alacakliTakip, formData.alacakliHaciz, formData.alacakliOncekiHaciz],
-        ['SGK Tescil/Hizmet', formData.sgkKaydi, formData.sgkHaciz, formData.sgkOncekiHaciz]
+        [{ text: 'Tasinmaz Mal Varligi', isStatic: true }, { text: formData.tasinmazVarlik }, { text: formData.tasinmazHaciz }, { text: formData.tasinmazOncekiHaciz }],
+        [{ text: 'Arac Kaydi', isStatic: true }, { text: formData.aracKaydi }, { text: formData.aracHaciz }, { text: formData.aracOncekiHaciz }],
+        [{ text: 'Alacakli Icra Takip', isStatic: true }, { text: formData.alacakliTakip }, { text: formData.alacakliHaciz }, { text: formData.alacakliOncekiHaciz }],
+        [{ text: 'SGK Tescil/Hizmet', isStatic: true }, { text: formData.sgkKaydi }, { text: formData.sgkHaciz }, { text: formData.sgkOncekiHaciz }]
       ]
     )
     
@@ -307,15 +338,15 @@ function App() {
     addTable(
       ['İşlem Türü', 'Süreç/Aşamalar', 'Durum', 'Açıklama'],
       [
-        ['Adres Tespiti', 'Resmi Adres', formData.resmiAdresDurum, formData.resmiAdresNot],
-        ['', 'Sanal Ofis', formData.sanalOfisDurum, formData.sanalOfisNot],
-        ['', 'Alternatif Adres', formData.alternatifAdresDurum, formData.alternatifAdresNot],
-        ['Haciz Süreci', 'Talep Yazısı', formData.talepYazisiDurum, formData.talepYazisiNot],
-        ['', 'İcra Kararı', formData.icraKarariDurum, formData.icraKarariNot],
-        ['', 'Adres Ziyareti', formData.adresZiyaretiDurum, formData.adresZiyaretiNot],
-        ['', 'Haciz Tutanağı', formData.hacizTutanagiDurum, formData.hacizTutanagiNot],
-        ['Satış Değerlendirme', 'Satış Kabiliyeti', formData.satisNotiDurum, formData.satisNotiNot],
-        ['Genel Hukuki Değerlendirme', '', '', formData.hukukiDegerlendirme]
+        [{ text: 'Adres Tespiti', isStatic: true }, { text: 'Resmi Adres', isStatic: true }, { text: formData.resmiAdresDurum }, { text: formData.resmiAdresNot }],
+        [{ text: '', isStatic: true }, { text: 'Sanal Ofis', isStatic: true }, { text: formData.sanalOfisDurum }, { text: formData.sanalOfisNot }],
+        [{ text: '', isStatic: true }, { text: 'Alternatif Adres', isStatic: true }, { text: formData.alternatifAdresDurum }, { text: formData.alternatifAdresNot }],
+        [{ text: 'Haciz Süreci', isStatic: true }, { text: 'Talep Yazısı', isStatic: true }, { text: formData.talepYazisiDurum }, { text: formData.talepYazisiNot }],
+        [{ text: '', isStatic: true }, { text: 'İcra Kararı', isStatic: true }, { text: formData.icraKarariDurum }, { text: formData.icraKarariNot }],
+        [{ text: '', isStatic: true }, { text: 'Adres Ziyareti', isStatic: true }, { text: formData.adresZiyaretiDurum }, { text: formData.adresZiyaretiNot }],
+        [{ text: '', isStatic: true }, { text: 'Haciz Tutanağı', isStatic: true }, { text: formData.hacizTutanagiDurum }, { text: formData.hacizTutanagiNot }],
+        [{ text: 'Satış Değerlendirme', isStatic: true }, { text: 'Satış Kabiliyeti', isStatic: true }, { text: formData.satisNotiDurum }, { text: formData.satisNotiNot }],
+        [{ text: 'Genel Hukuki Değerlendirme', isStatic: true }, { text: '', isStatic: true }, { text: '', isStatic: true }, { text: formData.hukukiDegerlendirme }]
       ]
     )
     
@@ -324,11 +355,11 @@ function App() {
     addTable(
       ['İşlem ve Açıklama', 'Durum', 'Not'],
       [
-        ['Haciz Müzekkeresi Talebi', formData.bankaMuzekkereDurum, formData.bankaMuzekkereNot],
-        ['İcra Müzekkere Gönderimi', formData.icraGonderimDurum, formData.icraGonderimNot],
-        ['Banka Geri Bildirimleri', formData.bankaGeriDonuşDurum, formData.bankaGeriDonuşNot],
-        ['Para Tespit ve Blokeler', formData.paraBlokedurum, formData.paraBokeNot],
-        ['Genel Hukuki Değerlendirme', '', formData.bankaHukukiDegerlendirme]
+        [{ text: 'Haciz Müzekkeresi Talebi', isStatic: true }, { text: formData.bankaMuzekkereDurum }, { text: formData.bankaMuzekkereNot }],
+        [{ text: 'İcra Müzekkere Gönderimi', isStatic: true }, { text: formData.icraGonderimDurum }, { text: formData.icraGonderimNot }],
+        [{ text: 'Banka Geri Bildirimleri', isStatic: true }, { text: formData.bankaGeriDonuşDurum }, { text: formData.bankaGeriDonuşNot }],
+        [{ text: 'Para Tespit ve Blokeler', isStatic: true }, { text: formData.paraBlokedurum }, { text: formData.paraBokeNot }],
+        [{ text: 'Genel Hukuki Değerlendirme', isStatic: true }, { text: '', isStatic: true }, { text: formData.bankaHukukiDegerlendirme }]
       ]
     )
     
@@ -337,13 +368,13 @@ function App() {
     addTable(
       ['Değerlendirme Alanı', 'Sonuç / Açıklama'],
       [
-        ['Tebligat Süreçleri', formData.tebligatSurecOzet],
-        ['Taşınmaz ve Araç Varlığı', formData.tasinmazAracOzet],
-        ['SGK ve Gelir Durumu', formData.sgkGelirOzet],
-        ['Fiili Haciz İmkanı', formData.hacizImkanOzet],
-        ['Fiili Haciz Uygulaması', formData.hacizUygulamaOzet],
-        ['Banka Varlıkları', formData.bankaVarlikOzet],
-        ['Genel Tahsil Kabiliyeti', formData.genelTahsilOzet]
+        [{ text: 'Tebligat Süreçleri', isStatic: true }, { text: formData.tebligatSurecOzet }],
+        [{ text: 'Taşınmaz ve Araç Varlığı', isStatic: true }, { text: formData.tasinmazAracOzet }],
+        [{ text: 'SGK ve Gelir Durumu', isStatic: true }, { text: formData.sgkGelirOzet }],
+        [{ text: 'Fiili Haciz İmkanı', isStatic: true }, { text: formData.hacizImkanOzet }],
+        [{ text: 'Fiili Haciz Uygulaması', isStatic: true }, { text: formData.hacizUygulamaOzet }],
+        [{ text: 'Banka Varlıkları', isStatic: true }, { text: formData.bankaVarlikOzet }],
+        [{ text: 'Genel Tahsil Kabiliyeti', isStatic: true }, { text: formData.genelTahsilOzet }]
       ]
     )
     
