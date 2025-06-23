@@ -18,14 +18,17 @@ function App() {
     borclu1Mersis: false,
     borclu1TK35: false,
     borclu1TK21: false,
+    borclu1eTebligat: false,
     borclu1Not: '',
     borclu2Mersis: false,
     borclu2TK35: false,
     borclu2TK21: false,
+    borclu2eTebligat: false,
     borclu2Not: '',
     borclu3Mersis: false,
     borclu3TK35: false,
     borclu3TK21: false,
+    borclu3eTebligat: false,
     borclu3Not: '',
     
     // UYAP Sorguları
@@ -204,6 +207,7 @@ function App() {
     const addTable = (headers, rows) => {
       const tableWidth = 180
       const colWidths = {
+        6: [30, 30, 30, 30, 30, 30],
         5: [36, 36, 36, 36, 36],
         4: [45, 45, 45, 45],
         3: [60, 60, 60],
@@ -278,11 +282,11 @@ function App() {
     
     // 2. Borçlu Tebligat Durumu
     addSection('1. BORCLU TEBLIGAT DURUMU BILGILERI')
-    const tebligatHeaders = ['Borclu', 'MERSIS/MERNIS', 'TK/35', 'TK/21', 'Not']
+    const tebligatHeaders = ['Borclu', 'MERSIS/MERNIS', 'TK/35', 'TK/21', 'e-Tebligat', 'Not']
     const tebligatData = [
-      ['Borclu 1', formData.borclu1Mersis ? 'X' : '', formData.borclu1TK35 ? 'X' : '', formData.borclu1TK21 ? 'X' : '', formData.borclu1Not],
-      ['Borclu 2', formData.borclu2Mersis ? 'X' : '', formData.borclu2TK35 ? 'X' : '', formData.borclu2TK21 ? 'X' : '', formData.borclu2Not],
-      ['Borclu 3', formData.borclu3Mersis ? 'X' : '', formData.borclu3TK35 ? 'X' : '', formData.borclu3TK21 ? 'X' : '', formData.borclu3Not]
+      ['Borclu 1', formData.borclu1Mersis ? 'X' : '', formData.borclu1TK35 ? 'X' : '', formData.borclu1TK21 ? 'X' : '', formData.borclu1eTebligat ? 'X' : '', formData.borclu1Not],
+      ['Borclu 2', formData.borclu2Mersis ? 'X' : '', formData.borclu2TK35 ? 'X' : '', formData.borclu2TK21 ? 'X' : '', formData.borclu2eTebligat ? 'X' : '', formData.borclu2Not],
+      ['Borclu 3', formData.borclu3Mersis ? 'X' : '', formData.borclu3TK35 ? 'X' : '', formData.borclu3TK21 ? 'X' : '', formData.borclu3eTebligat ? 'X' : '', formData.borclu3Not]
     ]
     addTable(tebligatHeaders, tebligatData)
     
@@ -418,6 +422,7 @@ function App() {
                 <div>MERSİS/MERNİS Adresine Tebligat</div>
                 <div>TK/35'e Göre Tebligat</div>
                 <div>TK/21'e Göre Tebligat</div>
+                <div>e-Tebligat Durumu</div>
                 <div>Not</div>
               </div>
               
@@ -444,6 +449,14 @@ function App() {
                     type="checkbox"
                     name="borclu1TK21"
                     checked={formData.borclu1TK21}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="borclu1eTebligat"
+                    checked={formData.borclu1eTebligat}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -485,6 +498,14 @@ function App() {
                 </div>
                 <div>
                   <input
+                    type="checkbox"
+                    name="borclu2eTebligat"
+                    checked={formData.borclu2eTebligat}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <input
                     type="text"
                     name="borclu2Not"
                     value={formData.borclu2Not}
@@ -516,6 +537,14 @@ function App() {
                     type="checkbox"
                     name="borclu3TK21"
                     checked={formData.borclu3TK21}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="borclu3eTebligat"
+                    checked={formData.borclu3eTebligat}
                     onChange={handleInputChange}
                   />
                 </div>
