@@ -157,7 +157,7 @@ function App() {
     
     // Helper functions - Türkçe karakter desteği
     const turkishToEnglish = (text) => {
-      if (!text) return ''
+      if (typeof text !== 'string' || !text) return ''
       return text
         .replace(/ç/g, 'c').replace(/Ç/g, 'C')
         .replace(/ğ/g, 'g').replace(/Ğ/g, 'G')
@@ -208,7 +208,8 @@ function App() {
     const addTable = (headers, rows) => {
       const tableWidth = 180
       const colWidths = {
-        4: [45, 35, 35, 35, 30],  // 5 kolon
+        5: [36, 36, 36, 36, 36],  // 5 kolon
+        4: [45, 45, 45, 45],      // 4 kolon
         3: [60, 60, 60],          // 3 kolon
       }
       const widths = colWidths[headers.length] || Array(headers.length).fill(tableWidth / headers.length)
@@ -216,13 +217,14 @@ function App() {
       // Headers
       pdf.setFont('helvetica', 'bold')
       pdf.setFontSize(7)
-      pdf.setFillColor(80, 80, 80)
-      pdf.setTextColor(255, 255, 255)
       
       let xPos = 15
       headers.forEach((header, i) => {
-        pdf.rect(xPos, yPos, widths[i], 5, 'F')
-        const cleanHeader = turkishToEnglish(header).substring(0, 12)
+        pdf.setFillColor(80, 80, 80)
+        pdf.setTextColor(255, 255, 255)
+        pdf.setDrawColor(0, 0, 0)
+        pdf.rect(xPos, yPos, widths[i], 5, 'FD')
+        const cleanHeader = turkishToEnglish(header).substring(0, 20)
         pdf.text(cleanHeader, xPos + 1, yPos + 3.5)
         xPos += widths[i]
       })
@@ -236,14 +238,14 @@ function App() {
       rows.forEach(row => {
         xPos = 15
         row.forEach((cell, i) => {
-          pdf.rect(xPos, yPos, widths[i], 4.5)
+          pdf.rect(xPos, yPos, widths[i], 5)
           if (cell && String(cell).trim()) {
-            const cleanCell = turkishToEnglish(String(cell)).substring(0, 15)
-            pdf.text(cleanCell, xPos + 1, yPos + 3)
+            const cleanCell = turkishToEnglish(String(cell)).substring(0, 25)
+            pdf.text(cleanCell, xPos + 1, yPos + 3.5)
           }
           xPos += widths[i]
         })
-        yPos += 4.5
+        yPos += 5
       })
       yPos += 3
     }
@@ -270,44 +272,7 @@ function App() {
       ['Borclu 2', formData.borclu2Mersis ? 'X' : '', formData.borclu2TK35 ? 'X' : '', formData.borclu2TK21 ? 'X' : '', formData.borclu2Not],
       ['Borclu 3', formData.borclu3Mersis ? 'X' : '', formData.borclu3TK35 ? 'X' : '', formData.borclu3TK21 ? 'X' : '', formData.borclu3Not]
     ]
-    
-    // Özel 5 kolon tablo için widths ayarla
-    const tableWidth = 180
-    const widths = [36, 36, 36, 36, 36]  // 5 eşit kolon
-    
-    // Headers
-    pdf.setFont('helvetica', 'bold')
-    pdf.setFontSize(7)
-    pdf.setFillColor(80, 80, 80)
-    pdf.setTextColor(255, 255, 255)
-    
-    let xPos = 15
-    tebligatHeaders.forEach((header, i) => {
-      pdf.rect(xPos, yPos, widths[i], 5, 'F')
-      const cleanHeader = turkishToEnglish(header).substring(0, 10)
-      pdf.text(cleanHeader, xPos + 1, yPos + 3.5)
-      xPos += widths[i]
-    })
-    yPos += 5
-    
-    // Rows
-    pdf.setTextColor(0, 0, 0)
-    pdf.setFont('helvetica', 'normal')
-    pdf.setFontSize(7)
-    
-    tebligatData.forEach(row => {
-      xPos = 15
-      row.forEach((cell, i) => {
-        pdf.rect(xPos, yPos, widths[i], 4.5)
-        if (cell && String(cell).trim()) {
-          const cleanCell = turkishToEnglish(String(cell)).substring(0, 12)
-          pdf.text(cleanCell, xPos + 1, yPos + 3)
-        }
-        xPos += widths[i]
-      })
-      yPos += 4.5
-    })
-    yPos += 2
+    addTable(tebligatHeaders, tebligatData)
     
     // 3. UYAP Sorguları
     addSection('2. UYAP UZERINDEN GERCEKLESTIRILEN SORGULAR')
@@ -1082,7 +1047,7 @@ function App() {
               
               <div className="table-row">
                 <div>Genel Tahsil Kabiliyeti</div>
-      <div>
+                <div>
                   <textarea
                     name="genelTahsilOzet"
                     value={formData.genelTahsilOzet}
@@ -1094,7 +1059,7 @@ function App() {
               </div>
             </div>
           </section>
-      </div>
+        </div>
 
         <div className="form-actions">
           <button 
@@ -1102,7 +1067,7 @@ function App() {
             className="pdf-button"
           >
             PDF İndir
-        </button>
+          </button>
         </div>
       </div>
     </div>
