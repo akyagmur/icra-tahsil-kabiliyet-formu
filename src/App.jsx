@@ -324,13 +324,32 @@ function App() {
     
     // 6. Özet
     addSection('İCRA DOSYASI TAHSİL KABİLİYETİ DEĞERLENDİRME ÖZETİ')
-    addField('Tebligat Süreçleri', formData.tebligatSurecOzet, 150)
-    addField('Taşınmaz ve Araç Varlığı', formData.tasinmazAracOzet, 150)
-    addField('SGK ve Gelir Durumu', formData.sgkGelirOzet, 150)
-    addField('Fiili Haciz İmkanı', formData.hacizImkanOzet, 150)
-    addField('Fiili Haciz Uygulaması', formData.hacizUygulamaOzet, 150)
-    addField('Banka Varlıkları', formData.bankaVarlikOzet, 150)
-    addField('Genel Tahsil Kabiliyeti', formData.genelTahsilOzet, 150)
+
+    const drawSummaryField = (label, value) => {
+      const fieldHeight = 4;
+      const fieldWidth = 130; 
+      const labelY = yPos + fieldHeight / 2 - 1;
+
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(8);
+      pdf.text(turkishToEnglish(label) + ':', 15, labelY);
+      pdf.rect(55, yPos, fieldWidth, fieldHeight);
+
+      if (value) {
+        const cleanValue = turkishToEnglish(String(value));
+        const textLines = pdf.splitTextToSize(cleanValue, fieldWidth - 4);
+        pdf.text(textLines, 57, yPos + 3.5);
+      }
+      yPos += fieldHeight + 2; 
+    };
+
+    drawSummaryField('Tebligat Süreçleri', formData.tebligatSurecOzet);
+    drawSummaryField('Taşınmaz ve Araç Varlığı', formData.tasinmazAracOzet);
+    drawSummaryField('SGK ve Gelir Durumu', formData.sgkGelirOzet);
+    drawSummaryField('Fiili Haciz İmkanı', formData.hacizImkanOzet);
+    drawSummaryField('Fiili Haciz Uygulaması', formData.hacizUygulamaOzet);
+    drawSummaryField('Banka Varlıkları', formData.bankaVarlikOzet);
+    drawSummaryField('Genel Tahsil Kabiliyeti', formData.genelTahsilOzet);
     
     // Dinamik dosya ismi oluştur
     const fileName = createFileName(formData.borcluAdi)
