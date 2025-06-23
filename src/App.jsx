@@ -458,8 +458,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Borçlu 1</div>
-                <div>
+                <div data-label="Borçlu">Borçlu 1</div>
+                <div data-label="MERSİS/MERNİS Adresine Tebligat">
                   <input
                     type="checkbox"
                     name="borclu1Mersis"
@@ -467,7 +467,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="TK/35'e Göre Tebligat">
                   <input
                     type="checkbox"
                     name="borclu1TK35"
@@ -475,7 +475,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="TK/21'e Göre Tebligat">
                   <input
                     type="checkbox"
                     name="borclu1TK21"
@@ -483,7 +483,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="e-Tebligat Durumu">
                   <input
                     type="checkbox"
                     name="borclu1eTebligat"
@@ -491,7 +491,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Not">
                   <input
                     type="text"
                     name="borclu1Not"
@@ -502,8 +502,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Borçlu 2</div>
-                <div>
+                <div data-label="Borçlu">Borçlu 2</div>
+                <div data-label="MERSİS/MERNİS Adresine Tebligat">
                   <input
                     type="checkbox"
                     name="borclu2Mersis"
@@ -511,7 +511,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="TK/35'e Göre Tebligat">
                   <input
                     type="checkbox"
                     name="borclu2TK35"
@@ -519,7 +519,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="TK/21'e Göre Tebligat">
                   <input
                     type="checkbox"
                     name="borclu2TK21"
@@ -527,7 +527,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="e-Tebligat Durumu">
                   <input
                     type="checkbox"
                     name="borclu2eTebligat"
@@ -535,7 +535,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Not">
                   <input
                     type="text"
                     name="borclu2Not"
@@ -546,8 +546,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Borçlu 3</div>
-                <div>
+                <div data-label="Borçlu">Borçlu 3</div>
+                <div data-label="MERSİS/MERNİS Adresine Tebligat">
                   <input
                     type="checkbox"
                     name="borclu3Mersis"
@@ -555,7 +555,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="TK/35'e Göre Tebligat">
                   <input
                     type="checkbox"
                     name="borclu3TK35"
@@ -563,7 +563,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="TK/21'e Göre Tebligat">
                   <input
                     type="checkbox"
                     name="borclu3TK21"
@@ -571,7 +571,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="e-Tebligat Durumu">
                   <input
                     type="checkbox"
                     name="borclu3eTebligat"
@@ -579,7 +579,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Not">
                   <input
                     type="text"
                     name="borclu3Not"
@@ -604,8 +604,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Taşınmaz Mal Varlığı</div>
-                <div>
+                <div data-label="Sorgu Konusu">Taşınmaz Mal Varlığı</div>
+                <div data-label="Sonuç">
                   <select
                     name="tasinmazVarlik"
                     value={formData.tasinmazVarlik}
@@ -615,7 +615,7 @@ function App() {
                     <option value="var">Var</option>
                   </select>
                 </div>
-                <div>
+                <div data-label="Haciz Uygulama Bilgisi">
                   <textarea
                     name="tasinmazHaciz"
                     value={formData.tasinmazHaciz}
@@ -623,7 +623,7 @@ function App() {
                     rows="2"
                   />
                 </div>
-                <div>
+                <div data-label="Haczimizden Önce Konulmuş Hacizler/Rehinler">
                   <textarea
                     name="tasinmazOncekiHaciz"
                     value={formData.tasinmazOncekiHaciz}
@@ -634,8 +634,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Araç Kaydı</div>
-                <div>
+                <div data-label="Sorgu Konusu">Araç Kaydı</div>
+                <div data-label="Sonuç">
                   <select
                     name="aracKaydi"
                     value={formData.aracKaydi}
@@ -645,7 +645,7 @@ function App() {
                     <option value="var">Var</option>
                   </select>
                 </div>
-                <div>
+                <div data-label="Haciz Uygulama Bilgisi">
                   <textarea
                     name="aracHaciz"
                     value={formData.aracHaciz}
@@ -653,7 +653,7 @@ function App() {
                     rows="2"
                   />
                 </div>
-                <div>
+                <div data-label="Haczimizden Önce Konulmuş Hacizler/Rehinler">
                   <textarea
                     name="aracOncekiHaciz"
                     value={formData.aracOncekiHaciz}
@@ -664,8 +664,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Alacaklı Olduğu İcra Takip Dosyaları</div>
-                <div>
+                <div data-label="Sorgu Konusu">Alacaklı Olduğu İcra Takip Dosyaları</div>
+                <div data-label="Sonuç">
                   <select
                     name="alacakliTakip"
                     value={formData.alacakliTakip}
@@ -675,7 +675,7 @@ function App() {
                     <option value="var">Var</option>
                   </select>
                 </div>
-                <div>
+                <div data-label="Haciz Uygulama Bilgisi">
                   <textarea
                     name="alacakliHaciz"
                     value={formData.alacakliHaciz}
@@ -683,7 +683,7 @@ function App() {
                     rows="2"
                   />
                 </div>
-                <div>
+                <div data-label="Haczimizden Önce Konulmuş Hacizler/Rehinler">
                   <textarea
                     name="alacakliOncekiHaciz"
                     value={formData.alacakliOncekiHaciz}
@@ -694,8 +694,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>SGK Tescil / Hizmet Kaydı</div>
-                <div>
+                <div data-label="Sorgu Konusu">SGK Tescil / Hizmet Kaydı</div>
+                <div data-label="Sonuç">
                   <select
                     name="sgkKaydi"
                     value={formData.sgkKaydi}
@@ -705,7 +705,7 @@ function App() {
                     <option value="var">Var</option>
                   </select>
                 </div>
-                <div>
+                <div data-label="Haciz Uygulama Bilgisi">
                   <textarea
                     name="sgkHaciz"
                     value={formData.sgkHaciz}
@@ -714,7 +714,7 @@ function App() {
                     placeholder="Maaş haczi imkanı"
                   />
                 </div>
-                <div>
+                <div data-label="Haczimizden Önce Konulmuş Hacizler/Rehinler">
                   <textarea
                     name="sgkOncekiHaciz"
                     value={formData.sgkOncekiHaciz}
@@ -739,9 +739,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div rowSpan="3">Adres Tespiti</div>
-                <div>Resmi Adres</div>
-                <div>
+                <div data-label="İşlem Türü">Adres Tespiti</div>
+                <div data-label="Süreç/Aşamalar">Resmi Adres</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="resmiAdresDurum"
@@ -749,7 +749,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="resmiAdresNot"
                     value={formData.resmiAdresNot}
@@ -760,9 +760,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div></div>
-                <div>Sanal Ofis Durumu</div>
-                <div>
+                <div data-label="İşlem Türü">Adres Tespiti</div>
+                <div data-label="Süreç/Aşamalar">Sanal Ofis Durumu</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="sanalOfisDurum"
@@ -770,7 +770,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="sanalOfisNot"
                     value={formData.sanalOfisNot}
@@ -781,9 +781,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div></div>
-                <div>Alternatif/ Şube vs. Adresleri</div>
-                <div>
+                <div data-label="İşlem Türü">Adres Tespiti</div>
+                <div data-label="Süreç/Aşamalar">Alternatif/ Şube vs. Adresleri</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="alternatifAdresDurum"
@@ -791,7 +791,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="alternatifAdresNot"
                     value={formData.alternatifAdresNot}
@@ -802,9 +802,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div rowSpan="4">Haciz Süreci</div>
-                <div>Fiili Haciz Talep Yazısının Hazırlanması</div>
-                <div>
+                <div data-label="İşlem Türü">Haciz Süreci</div>
+                <div data-label="Süreç/Aşamalar">Fiili Haciz Talep Yazısının Hazırlanması</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="talepYazisiDurum"
@@ -812,7 +812,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="talepYazisiNot"
                     value={formData.talepYazisiNot}
@@ -823,9 +823,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div></div>
-                <div>İcra Müdürlüğünün Talep Üzerine Verdiği Karar</div>
-                <div>
+                <div data-label="İşlem Türü">Haciz Süreci</div>
+                <div data-label="Süreç/Aşamalar">İcra Müdürlüğünün Talep Üzerine Verdiği Karar</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="icraKarariDurum"
@@ -833,7 +833,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="icraKarariNot"
                     value={formData.icraKarariNot}
@@ -844,9 +844,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div></div>
-                <div>Tespit Edilen Adreslere Gidilmesi</div>
-                <div>
+                <div data-label="İşlem Türü">Haciz Süreci</div>
+                <div data-label="Süreç/Aşamalar">Tespit Edilen Adreslere Gidilmesi</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="adresZiyaretiDurum"
@@ -854,7 +854,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="adresZiyaretiNot"
                     value={formData.adresZiyaretiNot}
@@ -865,9 +865,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div></div>
-                <div>Haciz Tutanağı Düzenlenmesi</div>
-                <div>
+                <div data-label="İşlem Türü">Haciz Süreci</div>
+                <div data-label="Süreç/Aşamalar">Haciz Tutanağı Düzenlenmesi</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="hacizTutanagiDurum"
@@ -875,7 +875,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="hacizTutanagiNot"
                     value={formData.hacizTutanagiNot}
@@ -886,9 +886,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Haczedilen Taşınırların Satış Değerlendirmesi</div>
-                <div>Borcun ne kadarını karşıladığı ve satış kabiliyeti</div>
-                <div>
+                <div data-label="İşlem Türü">Haczedilen Taşınırların Satış Değerlendirmesi</div>
+                <div data-label="Süreç/Aşamalar">Borcun ne kadarını karşıladığı ve satış kabiliyeti</div>
+                <div data-label="İşlem Durumu">
                   <input
                     type="text"
                     name="satisNotiDurum"
@@ -896,7 +896,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="satisNotiNot"
                     value={formData.satisNotiNot}
@@ -907,10 +907,10 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Genel Hukuki Değerlendirme</div>
-                <div></div>
-                <div></div>
-                <div>
+                <div data-label="İşlem Türü">Genel Hukuki Değerlendirme</div>
+                <div data-label="Süreç/Aşamalar"></div>
+                <div data-label="İşlem Durumu"></div>
+                <div data-label="Açıklama / Not">
                   <textarea
                     name="hukukiDegerlendirme"
                     value={formData.hukukiDegerlendirme}
@@ -934,8 +934,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Bankalara Haciz Müzekkeresi Gönderilmesi Talebi</div>
-                <div>
+                <div data-label="İşlem ve Açıklama">Bankalara Haciz Müzekkeresi Gönderilmesi Talebi</div>
+                <div data-label="Durum">
                   <input
                     type="text"
                     name="bankaMuzekkereDurum"
@@ -943,7 +943,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Not">
                   <textarea
                     name="bankaMuzekkereNot"
                     value={formData.bankaMuzekkereNot}
@@ -954,8 +954,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>İcra Daireleri tarafından Bankalara Müzekkere Gönderilmesi</div>
-                <div>
+                <div data-label="İşlem ve Açıklama">İcra Daireleri tarafından Bankalara Müzekkere Gönderilmesi</div>
+                <div data-label="Durum">
                   <input
                     type="text"
                     name="icraGonderimDurum"
@@ -963,7 +963,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Not">
                   <textarea
                     name="icraGonderimNot"
                     value={formData.icraGonderimNot}
@@ -974,8 +974,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Bankalardan Gelen Geri Bildirimler</div>
-                <div>
+                <div data-label="İşlem ve Açıklama">Bankalardan Gelen Geri Bildirimler</div>
+                <div data-label="Durum">
                   <input
                     type="text"
                     name="bankaGeriDonuşDurum"
@@ -983,7 +983,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Not">
                   <textarea
                     name="bankaGeriDonuşNot"
                     value={formData.bankaGeriDonuşNot}
@@ -994,8 +994,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Para tespit edilen bankalar ve Hesap Üzerine konulan Blokeler</div>
-                <div>
+                <div data-label="İşlem ve Açıklama">Para tespit edilen bankalar ve Hesap Üzerine konulan Blokeler</div>
+                <div data-label="Durum">
                   <input
                     type="text"
                     name="paraBlokedurum"
@@ -1003,7 +1003,7 @@ function App() {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
+                <div data-label="Not">
                   <textarea
                     name="paraBokeNot"
                     value={formData.paraBokeNot}
@@ -1014,9 +1014,9 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Genel Hukuki Değerlendirme</div>
-                <div></div>
-                <div>
+                <div data-label="İşlem ve Açıklama">Genel Hukuki Değerlendirme</div>
+                <div data-label="Durum"></div>
+                <div data-label="Not">
                   <textarea
                     name="bankaHukukiDegerlendirme"
                     value={formData.bankaHukukiDegerlendirme}
@@ -1039,8 +1039,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Tebligat Süreçleri</div>
-                <div>
+                <div data-label="Değerlendirme Alanı">Tebligat Süreçleri</div>
+                <div data-label="Sonuç / Açıklama">
                   <textarea
                     name="tebligatSurecOzet"
                     value={formData.tebligatSurecOzet}
@@ -1052,8 +1052,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Taşınmaz ve Araç Varlığı</div>
-                <div>
+                <div data-label="Değerlendirme Alanı">Taşınmaz ve Araç Varlığı</div>
+                <div data-label="Sonuç / Açıklama">
                   <textarea
                     name="tasinmazAracOzet"
                     value={formData.tasinmazAracOzet}
@@ -1065,8 +1065,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>SGK ve Gelir Durumu</div>
-                <div>
+                <div data-label="Değerlendirme Alanı">SGK ve Gelir Durumu</div>
+                <div data-label="Sonuç / Açıklama">
                   <textarea
                     name="sgkGelirOzet"
                     value={formData.sgkGelirOzet}
@@ -1078,8 +1078,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Fiili Haciz İmkanı</div>
-                <div>
+                <div data-label="Değerlendirme Alanı">Fiili Haciz İmkanı</div>
+                <div data-label="Sonuç / Açıklama">
                   <textarea
                     name="hacizImkanOzet"
                     value={formData.hacizImkanOzet}
@@ -1091,8 +1091,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Fiili Haciz Uygulaması</div>
-                <div>
+                <div data-label="Değerlendirme Alanı">Fiili Haciz Uygulaması</div>
+                <div data-label="Sonuç / Açıklama">
                   <textarea
                     name="hacizUygulamaOzet"
                     value={formData.hacizUygulamaOzet}
@@ -1104,8 +1104,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Banka Varlıkları</div>
-                <div>
+                <div data-label="Değerlendirme Alanı">Banka Varlıkları</div>
+                <div data-label="Sonuç / Açıklama">
                   <textarea
                     name="bankaVarlikOzet"
                     value={formData.bankaVarlikOzet}
@@ -1117,8 +1117,8 @@ function App() {
               </div>
               
               <div className="table-row">
-                <div>Genel Tahsil Kabiliyeti</div>
-                <div>
+                <div data-label="Değerlendirme Alanı">Genel Tahsil Kabiliyeti</div>
+                <div data-label="Sonuç / Açıklama">
                   <textarea
                     name="genelTahsilOzet"
                     value={formData.genelTahsilOzet}

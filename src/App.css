@@ -238,6 +238,68 @@ body {
   transform: translateY(0);
 }
 
+/* Responsive Design for Tables */
+@media (max-width: 992px) {
+  .table-header {
+    display: none;
+  }
+
+  .tebligat-table,
+  .uyap-table,
+  .haciz-table,
+  .banka-table,
+  .ozet-table {
+    display: block;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+
+  .table-row {
+    display: block;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .table-row > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    text-align: right;
+    border-bottom: 1px solid #e1e8ed;
+    border-right: none;
+  }
+  
+  .table-row > div:last-child {
+    border-bottom: none;
+  }
+
+  .table-row > div::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-align: left;
+    margin-right: 15px;
+    color: #34495e;
+    flex-basis: 40%;
+    flex-grow: 1;
+  }
+  
+  .table-row > div > * {
+    flex-basis: 60%;
+    flex-grow: 1;
+  }
+
+   .table-row > div input[type="text"],
+   .table-row > div select,
+   .table-row > div textarea {
+     text-align: left;
+   }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app {
