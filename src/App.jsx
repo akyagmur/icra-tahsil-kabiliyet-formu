@@ -298,13 +298,10 @@ function App() {
         ['', 'İcra Kararı', formData.icraKarariDurum, formData.icraKarariNot],
         ['', 'Adres Ziyareti', formData.adresZiyaretiDurum, formData.adresZiyaretiNot],
         ['', 'Haciz Tutanağı', formData.hacizTutanagiDurum, formData.hacizTutanagiNot],
-        ['Satış Değerlendirme', 'Satış Kabiliyeti', formData.satisNotiDurum, formData.satisNotiNot]
+        ['Satış Değerlendirme', 'Satış Kabiliyeti', formData.satisNotiDurum, formData.satisNotiNot],
+        ['Genel Hukuki Değerlendirme', '', '', formData.hukukiDegerlendirme]
       ]
     )
-    
-    if (formData.hukukiDegerlendirme) {
-      addField('Genel Hukuki Değerlendirme', formData.hukukiDegerlendirme, 150)
-    }
     
     // 5. Banka Haciz
     addSection('4. BANKA HACİZ SÜRECİ BİLGİLERİ')
@@ -314,13 +311,10 @@ function App() {
         ['Haciz Müzekkeresi Talebi', formData.bankaMuzekkereDurum, formData.bankaMuzekkereNot],
         ['İcra Müzekkere Gönderimi', formData.icraGonderimDurum, formData.icraGonderimNot],
         ['Banka Geri Bildirimleri', formData.bankaGeriDonuşDurum, formData.bankaGeriDonuşNot],
-        ['Para Tespit ve Blokeler', formData.paraBlokedurum, formData.paraBokeNot]
+        ['Para Tespit ve Blokeler', formData.paraBlokedurum, formData.paraBokeNot],
+        ['Genel Hukuki Değerlendirme', '', formData.bankaHukukiDegerlendirme]
       ]
     )
-    
-    if (formData.bankaHukukiDegerlendirme) {
-      addField('Genel Hukuki Değerlendirme', formData.bankaHukukiDegerlendirme, 150)
-    }
     
     // 6. Özet
     addSection('İCRA DOSYASI TAHSİL KABİLİYETİ DEĞERLENDİRME ÖZETİ')
