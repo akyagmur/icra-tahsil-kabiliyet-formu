@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
 import './App.css'
 
 function App() {
@@ -133,50 +132,240 @@ function App() {
     return `${fileName}-icra-tahsil-kabiliyeti-formu.pdf`
   }
 
-  const generatePDF = async () => {
-    const element = formRef.current
-    
-    // PDF için özel styling
-    element.classList.add('pdf-mode')
-    element.style.background = 'white'
-    
-    // DOM'un güncellenmesini bekle
-    await new Promise(resolve => setTimeout(resolve, 200))
-    
-    const canvas = await html2canvas(element, {
-      scale: 1.5,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      logging: false,
-      width: element.scrollWidth,
-      height: element.scrollHeight,
-      removeContainer: true
-    })
-    
-    // Styling'i eski haline getir
-    element.classList.remove('pdf-mode')
-    element.style.background = ''
-    
-    const imgData = canvas.toDataURL('image/png', 0.95)
+  const generatePDF = () => {
     const pdf = new jsPDF('p', 'mm', 'a4')
-    const imgWidth = 210   // Tam sayfa genişliği
-    const pageHeight = 297 // Tam sayfa yüksekliği
-    const imgHeight = (canvas.height * imgWidth) / canvas.width
+    let yPos = 20
     
-    // Tek sayfaya sığdırmaya çalış
-    if (imgHeight <= pageHeight) {
-      // Tek sayfa - tam boyut
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, '', 'FAST')
-    } else {
-      // Çok uzunsa scale down yap - tam sayfa kullan
-      const scaleFactor = pageHeight / imgHeight
-      const scaledWidth = imgWidth * scaleFactor
-      const scaledHeight = pageHeight
-      const xPosition = (210 - scaledWidth) / 2
-      
-      pdf.addImage(imgData, 'PNG', xPosition, 0, scaledWidth, scaledHeight, '', 'FAST')
+    // Türkçe karakter desteği için font
+    pdf.setFont('helvetica', 'bold')
+    pdf.setFontSize(14)
+    pdf.setTextColor(0, 0, 0)
+    
+    // Başlık - iki satırda
+    const title1 = 'ICRA DOSYASI TAHSIL KABILIYETI'
+    const title2 = 'DEGERLENDIRME FORMU'
+    
+    pdf.text(title1, 105, yPos, { align: 'center' })
+    yPos += 6
+    pdf.text(title2, 105, yPos, { align: 'center' })
+    yPos += 10
+    
+    // Çizgi
+    pdf.setLineWidth(0.5)
+    pdf.line(15, yPos, 195, yPos)
+    yPos += 10
+    
+    // Helper functions - Türkçe karakter desteği
+    const turkishToEnglish = (text) => {
+      if (!text) return ''
+      return text
+        .replace(/ç/g, 'c').replace(/Ç/g, 'C')
+        .replace(/ğ/g, 'g').replace(/Ğ/g, 'G')
+        .replace(/ı/g, 'i').replace(/I/g, 'I')
+        .replace(/İ/g, 'I').replace(/i/g, 'i')
+        .replace(/ö/g, 'o').replace(/Ö/g, 'O')
+        .replace(/ş/g, 's').replace(/Ş/g, 'S')
+        .replace(/ü/g, 'u').replace(/Ü/g, 'U')
     }
+    
+    const addSection = (title, addSpace = true) => {
+      if (addSpace) yPos += 2  // Üste biraz boşluk ekle
+      pdf.setFont('helvetica', 'bold')
+      pdf.setFontSize(9)
+      pdf.text(turkishToEnglish(title), 15, yPos)
+      yPos += 5
+    }
+    
+    const addField = (label, value, width = 85) => {
+      pdf.setFont('helvetica', 'normal')
+      pdf.setFontSize(8)
+      pdf.text(turkishToEnglish(label) + ':', 15, yPos)
+      pdf.rect(45, yPos - 2.5, width, 4)
+      if (value) {
+        const cleanValue = turkishToEnglish(String(value)).substring(0, 35)
+        pdf.text(cleanValue, 47, yPos)
+      }
+      yPos += 5
+    }
+    
+    const addFieldInline = (label1, value1, label2, value2) => {
+      pdf.setFont('helvetica', 'normal')
+      pdf.setFontSize(8)
+      pdf.text(turkishToEnglish(label1) + ':', 15, yPos)
+      pdf.rect(45, yPos - 2.5, 65, 4)
+      if (value1) {
+        pdf.text(turkishToEnglish(String(value1)).substring(0, 20), 47, yPos)
+      }
+      
+      pdf.text(turkishToEnglish(label2) + ':', 115, yPos)
+      pdf.rect(145, yPos - 2.5, 50, 4)
+      if (value2) {
+        pdf.text(turkishToEnglish(String(value2)).substring(0, 15), 147, yPos)
+      }
+      yPos += 5
+    }
+    
+    const addTable = (headers, rows) => {
+      const tableWidth = 180
+      const colWidths = {
+        4: [45, 35, 35, 35, 30],  // 5 kolon
+        3: [60, 60, 60],          // 3 kolon
+      }
+      const widths = colWidths[headers.length] || Array(headers.length).fill(tableWidth / headers.length)
+      
+      // Headers
+      pdf.setFont('helvetica', 'bold')
+      pdf.setFontSize(7)
+      pdf.setFillColor(80, 80, 80)
+      pdf.setTextColor(255, 255, 255)
+      
+      let xPos = 15
+      headers.forEach((header, i) => {
+        pdf.rect(xPos, yPos, widths[i], 5, 'F')
+        const cleanHeader = turkishToEnglish(header).substring(0, 12)
+        pdf.text(cleanHeader, xPos + 1, yPos + 3.5)
+        xPos += widths[i]
+      })
+      yPos += 5
+      
+      // Rows
+      pdf.setTextColor(0, 0, 0)
+      pdf.setFont('helvetica', 'normal')
+      pdf.setFontSize(7)
+      
+      rows.forEach(row => {
+        xPos = 15
+        row.forEach((cell, i) => {
+          pdf.rect(xPos, yPos, widths[i], 4.5)
+          if (cell && String(cell).trim()) {
+            const cleanCell = turkishToEnglish(String(cell)).substring(0, 15)
+            pdf.text(cleanCell, xPos + 1, yPos + 3)
+          }
+          xPos += widths[i]
+        })
+        yPos += 4.5
+      })
+      yPos += 3
+    }
+    
+    const checkNewPage = (space = 25) => {
+      if (yPos > 270 - space) {
+        pdf.addPage()
+        yPos = 20
+      }
+    }
+    
+    // 1. Genel Bilgiler
+    addSection('GENEL BILGILER', false)
+    addFieldInline('Alacakli Adi', formData.alacakliAdi, 'Borclu Adi', formData.borcluAdi)
+    addFieldInline('Icra Dairesi', formData.icraDairesi, 'Dosya Numarasi', formData.dosyaNumarasi)
+    addField('Alacak Miktari', formData.alacakMiktari, 140)
+    yPos += 2
+    
+    // 2. Borçlu Tebligat Durumu
+    addSection('1. BORCLU TEBLIGAT DURUMU BILGILERI')
+    const tebligatHeaders = ['Borclu', 'MERSIS/MERNIS', 'TK/35', 'TK/21', 'Not']
+    const tebligatData = [
+      ['Borclu 1', formData.borclu1Mersis ? 'X' : '', formData.borclu1TK35 ? 'X' : '', formData.borclu1TK21 ? 'X' : '', formData.borclu1Not],
+      ['Borclu 2', formData.borclu2Mersis ? 'X' : '', formData.borclu2TK35 ? 'X' : '', formData.borclu2TK21 ? 'X' : '', formData.borclu2Not],
+      ['Borclu 3', formData.borclu3Mersis ? 'X' : '', formData.borclu3TK35 ? 'X' : '', formData.borclu3TK21 ? 'X' : '', formData.borclu3Not]
+    ]
+    
+    // Özel 5 kolon tablo için widths ayarla
+    const tableWidth = 180
+    const widths = [36, 36, 36, 36, 36]  // 5 eşit kolon
+    
+    // Headers
+    pdf.setFont('helvetica', 'bold')
+    pdf.setFontSize(7)
+    pdf.setFillColor(80, 80, 80)
+    pdf.setTextColor(255, 255, 255)
+    
+    let xPos = 15
+    tebligatHeaders.forEach((header, i) => {
+      pdf.rect(xPos, yPos, widths[i], 5, 'F')
+      const cleanHeader = turkishToEnglish(header).substring(0, 10)
+      pdf.text(cleanHeader, xPos + 1, yPos + 3.5)
+      xPos += widths[i]
+    })
+    yPos += 5
+    
+    // Rows
+    pdf.setTextColor(0, 0, 0)
+    pdf.setFont('helvetica', 'normal')
+    pdf.setFontSize(7)
+    
+    tebligatData.forEach(row => {
+      xPos = 15
+      row.forEach((cell, i) => {
+        pdf.rect(xPos, yPos, widths[i], 4.5)
+        if (cell && String(cell).trim()) {
+          const cleanCell = turkishToEnglish(String(cell)).substring(0, 12)
+          pdf.text(cleanCell, xPos + 1, yPos + 3)
+        }
+        xPos += widths[i]
+      })
+      yPos += 4.5
+    })
+    yPos += 2
+    
+    // 3. UYAP Sorguları
+    addSection('2. UYAP UZERINDEN GERCEKLESTIRILEN SORGULAR')
+    addTable(
+      ['Sorgu Konusu', 'Sonuc', 'Haciz Uygulama', 'Onceki Hacizler'],
+      [
+        ['Tasinmaz Mal Varligi', formData.tasinmazVarlik, formData.tasinmazHaciz, formData.tasinmazOncekiHaciz],
+        ['Arac Kaydi', formData.aracKaydi, formData.aracHaciz, formData.aracOncekiHaciz],
+        ['Alacakli Icra Takip', formData.alacakliTakip, formData.alacakliHaciz, formData.alacakliOncekiHaciz],
+        ['SGK Tescil/Hizmet', formData.sgkKaydi, formData.sgkHaciz, formData.sgkOncekiHaciz]
+      ]
+    )
+    
+    // 4. Fiili Haciz
+    addSection('3. FİİLİ HACİZ (TAŞINIR HACZİ) SÜRECİ')
+    addTable(
+      ['İşlem Türü', 'Süreç/Aşamalar', 'Durum', 'Açıklama'],
+      [
+        ['Adres Tespiti', 'Resmi Adres', formData.resmiAdresDurum, formData.resmiAdresNot],
+        ['', 'Sanal Ofis', formData.sanalOfisDurum, formData.sanalOfisNot],
+        ['', 'Alternatif Adres', formData.alternatifAdresDurum, formData.alternatifAdresNot],
+        ['Haciz Süreci', 'Talep Yazısı', formData.talepYazisiDurum, formData.talepYazisiNot],
+        ['', 'İcra Kararı', formData.icraKarariDurum, formData.icraKarariNot],
+        ['', 'Adres Ziyareti', formData.adresZiyaretiDurum, formData.adresZiyaretiNot],
+        ['', 'Haciz Tutanağı', formData.hacizTutanagiDurum, formData.hacizTutanagiNot],
+        ['Satış Değerlendirme', 'Satış Kabiliyeti', formData.satisNotiDurum, formData.satisNotiNot]
+      ]
+    )
+    
+    if (formData.hukukiDegerlendirme) {
+      addField('Genel Hukuki Değerlendirme', formData.hukukiDegerlendirme, 150)
+    }
+    
+    // 5. Banka Haciz
+    addSection('4. BANKA HACİZ SÜRECİ BİLGİLERİ')
+    addTable(
+      ['İşlem ve Açıklama', 'Durum', 'Not'],
+      [
+        ['Haciz Müzekkeresi Talebi', formData.bankaMuzekkereDurum, formData.bankaMuzekkereNot],
+        ['İcra Müzekkere Gönderimi', formData.icraGonderimDurum, formData.icraGonderimNot],
+        ['Banka Geri Bildirimleri', formData.bankaGeriDonuşDurum, formData.bankaGeriDonuşNot],
+        ['Para Tespit ve Blokeler', formData.paraBlokedurum, formData.paraBokeNot]
+      ]
+    )
+    
+    if (formData.bankaHukukiDegerlendirme) {
+      addField('Genel Hukuki Değerlendirme', formData.bankaHukukiDegerlendirme, 150)
+    }
+    
+    // 6. Özet
+    addSection('İCRA DOSYASI TAHSİL KABİLİYETİ DEĞERLENDİRME ÖZETİ')
+    addField('Tebligat Süreçleri', formData.tebligatSurecOzet, 150)
+    addField('Taşınmaz ve Araç Varlığı', formData.tasinmazAracOzet, 150)
+    addField('SGK ve Gelir Durumu', formData.sgkGelirOzet, 150)
+    addField('Fiili Haciz İmkanı', formData.hacizImkanOzet, 150)
+    addField('Fiili Haciz Uygulaması', formData.hacizUygulamaOzet, 150)
+    addField('Banka Varlıkları', formData.bankaVarlikOzet, 150)
+    addField('Genel Tahsil Kabiliyeti', formData.genelTahsilOzet, 150)
     
     // Dinamik dosya ismi oluştur
     const fileName = createFileName(formData.borcluAdi)
