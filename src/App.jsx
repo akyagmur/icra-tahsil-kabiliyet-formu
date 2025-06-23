@@ -130,8 +130,8 @@ function App() {
       .map(char => turkishMap[char] || char)
       .join('')
       .replace(/[^a-z0-9\s-]/g, '') // Özel karakterleri kaldır
-      .replace(/\s+/g, '-') // Boşlukları tire ile değiştir
-      .replace(/-+/g, '-') // Çoklu tireleri tek tire yap
+      .replace(/\s+/g, '-') // Boşltukları tire ile değiştir
+      .replace(/-+/g, '-') // Çoklu ireleri tek tire yap
       .replace(/^-|-$/g, '') // Başındaki ve sonundaki tireleri kaldır
     
     return `${fileName}-icra-tahsil-kabiliyeti-formu.pdf`
